@@ -791,6 +791,11 @@ section {
   font-weight: 700;
 }
 
+.services .service-box p {
+  font-size: 13px;
+  text-align: justify;
+}
+
 .services .service-box .read-more {
   display: inline-flex;
   align-items: center;
