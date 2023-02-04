@@ -1,11 +1,13 @@
 var form = document.getElementById("my-form");
+const error = document.querySelector(".error-message");
+const success = document.querySelector(".sent-message");
+const loader = document.querySelector(".loading");
 
 async function handleSubmit(event) {
   event.preventDefault();
   var status = document.getElementById("my-form-status");
-  const error = document.querySelector(".error-message");
-  const success = document.querySelector(".sent-message");
   var data = new FormData(event.target);
+  loader.style.display = "block";
   fetch(event.target.action, {
     method: form.method,
     body: data,
@@ -15,7 +17,8 @@ async function handleSubmit(event) {
   })
     .then((response) => {
       if (response.ok) {
-        success.innerHTML = "Thanks for your submission!";
+        success.style.display = "block";
+        loader.style.display = "none";
         form.reset();
       } else {
         response.json().then((data) => {
@@ -23,14 +26,19 @@ async function handleSubmit(event) {
             error.innerHTML = data["errors"]
               .map((error) => error["message"])
               .join(", ");
+            error.style.display = "block";
+            loader.style.display = "none";
           } else {
-            error.innerHTML = "Oops! There was a problem submitting your form";
+            error.style.display = "block";
+            loader.style.display = "none";
           }
         });
       }
     })
     .catch((error) => {
       status.innerHTML = "Oops! There was a problem submitting your form";
+      error.style.display = "block";
+      loader.style.display = "none";
     });
 }
 form.addEventListener("submit", handleSubmit);
